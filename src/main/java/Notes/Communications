@@ -1,0 +1,39 @@
+An HTTP client : is the standard protocol for communication between clients and servers on the web.
+    1.Request Creation : Client builds an HTTP request with method, headers, and optional body.
+    2.Request Sending: Sent over a TCP connection (often secured with TLS for HTTPS).
+    3.Server Response: Status code, Headers , Body (actual data: HTML, JSON, XML, etc.).
+
+Spring boot communications:
+    1.Synchronous : Client wait for response from server before continuing. Blocking in nature.
+        1.RestTemplate
+        2.RestClient
+        3.feignClient
+    2.Asynchronous:
+        1.webClient
+Without spring boot way communication it uses HttpURLConnection:
+    1.TooMuch Boiler plate code
+    2. Response should be handled manually.
+    3.Limited support for Advance features.
+
+ Spring boot way :
+    1. RestTemplate: restTemplate.getForObject("http://localhost:8080/products"+id,String.class);
+        same as manually setting the connections .
+        other methods : getForEntity and many more.
+        Limitations : so many overloaded methods .no advance methods like retry and circuit breakers etc.
+
+    2.RestClient: Modern fluent bases API (chaining of methods)
+        1.one template for all different operations:
+            String response  = restClient
+            .get()
+            .uri("http://localhost:8082/products" +id)
+            .retrieve()
+            .body(String.class)
+
+    3.FeignClient : Declarative("What to do not how to do") HTTP client developed by Netflix.
+        available by spring-cloud-starter-open-feign &  provide all modern seamless integrations
+        i.Interface annotated with  @FeignClient(name = "product-service", url= "${feign.client.product.url")
+        ii.@GetMapping("/product/{id}") // simple like controller.
+            String getProductById(@PathVariable("id") String id);
+        iii. @EnableFeignClients -> by this spring boot starts searching feign interfaces.
+        @Autowire Interface class obj -> Implemented by feign
+

@@ -1,0 +1,14 @@
+In Microservice : the Services, or Components instances are created and deleted dynamically
+    so we can't hardcode the url, not scalable.but we have multiple instances of a service. it causes:
+       a. Single point of failure (one service getting more more calls)
+       b. No load balancing
+       c. Tight coupling
+       d. Difficulty in testing
+Service Discovery solve this issues for us : (Eureka,consul)
+         a. Eureka Server : acts like phoneBook -:has instance info of registered client like :service name,ip,instace id , portNumber etc.
+         b. Eureka client: Register itself with the server . Discover instance of other services via Eureka server.
+working :
+        add the dependency : spring cloud or particular
+        add annotation @EnableEurekaServer
+        add application properties like -> client register with server and eureka client fetch
+        in Feign client just send the service name;
