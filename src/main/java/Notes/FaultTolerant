@@ -1,0 +1,42 @@
+Fault Tolerance : A mircoService is fault tolerance if continues to work even when downstream system fails.
+                  Instead of crashing it handles the failure gracefully.
+
+  TO Avoid fault Tolerance Resilience4j combination of mechanism comes in picture.
+   RateLimiter -> Bulkhead -> TimeLimiter -> CircuitBreaker -> Retry
+
+add dependency -> Resilience4j-spring-boot3;
+
+1. RateLimiter : It Controls the number of requests allowed to a microservice in a given time window.(protects system form DDOS attack).
+    Algo's:
+    1.Fixed window counter
+    2.Sliding log
+    3.sliding window counter
+    4. Token buket
+    5.LeakyBucket
+
+2.Bulkhead : helps to control how many concurrent requests go to downstream service.
+    1.Semaphore bulkhead
+    2.Thread-pool bulkhead
+
+3.TimeLimiter
+
+4. Retry : used for Transient issues -> short issues like network issue, timeouts,
+    1. Retry of the same request after a short delay can get succeed.
+    2. user @Retry annotation ->
+    3.eg fixed retry or exponential retry.
+
+5.Circuit Breaker: @CircuitBreaker(name "service name", fallbackMethod = " fallback")
+    This pattern prevents an application to make repeated calls to a downstream service that is likely to fail.
+    Prevents from: unnecessary call to downstream service(which leads to slow recovery)
+                   Caller service(client) wastes resources an calling downstream service.
+
+    States:
+        1.Closed : All calls are allowed to downstream service.
+        2.Open  : No calls are allowed to downstream service. fail the calls immediately.
+        3.Half Open: Allows only limited number of test calls to downstream and keep track of their success rate.
+
+
+    fallback : this method always called when failure is attempted.
+
+
+

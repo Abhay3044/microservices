@@ -1,0 +1,8 @@
+Load Balancer : helps in distributing traffic to multiple instances of servers. preventing a server from overloaded.
+    1.Server side: centralized load balancer.
+    2.Client side: Load balancing capability present inside the client or it uses a library to take decisions.
+
+1.with RestTemplate:
+    1.add dependency -> spring-cloud-starter-loadbalancer.
+    2.use @LoadBalanced: -> spring intercepts the requests and call service discovery and do load balancing.
+

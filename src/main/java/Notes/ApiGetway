@@ -1,0 +1,20 @@
+It provides a Single entry point to access all microservices.
+And this Single Entry Point, provides lot of benefits like:
+
+Microservices challenge: Each service exposes its own API. Without a gateway, clients must know and call each service directly,
+                         which becomes complex as services grow.
+
+Gateway solution: Provides a unified interface so clients don’t need to manage multiple endpoints.
+
+Benefits:
+
+Simplifies communication: Clients talk to one endpoint.
+
+Improves security: Centralized authentication, authorization, and SSL termination.
+
+Optimizes performance: Caching, load balancing, and request aggregation.
+
+Adds resilience: Circuit breakers, retries, and fallback mechanisms.
+
+dependency -> spring-cloud-starter-gateway
+1.Routing : if a microservice is get removed or merged all client have not to update only api getway needs to update.

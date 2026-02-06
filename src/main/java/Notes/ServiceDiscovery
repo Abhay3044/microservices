@@ -12,3 +12,46 @@ working :
         add annotation @EnableEurekaServer
         add application properties like -> client register with server and eureka client fetch
         in Feign client just send the service name;
+
+
+1.Eureka server : PhoneBook, Have all instances info for all registered client.
+    setup:
+        1.add dependency -> spring-cloud-starter-netflix-eureka-server
+        2.enable eureka server @EnableEurekaServer -> Spring creates necessary beans and controller.
+        3.application properties -> basically if I am a server to set register = false and fetch registry = false.
+
+2.Eureka Client Application:
+    setup:
+        1.add dependency -> spring-cloud-starter-netflix-eureka-client.
+        2.applications.properties:
+            1.set register = true. fetch registry = true
+            2.eureka client server url = url for our eureka server(localhost::8082/eureka(default end point)
+
+Communication :
+    1.using rest
+    2.@Autowired
+        DiscoveryClient discoveryClient;&&discoveryClient.getInstaces("Product-service");
+        getting list of instances and then choose the particular instance(or use load balancing)
+    3.using feign client + service discovery ( load balancing is handled automatically) -> add spring-cloud-loadbalancer
+
+1.how eureka server knows service is up or down ? a.client send deregister req. b heart beat ( in case of any issue)
+2.how eureka server stores data? in-Memory : Map<String,List<InstanceInfo>>
+3.what is eureka server itself down( is is SOP)? no because at a time 3 instances of its running & eureka server itself a client
+4.Can it cause latency issue? no put in cache local(in 30 sec)
+
+
+2.Kubernetes
+    1.Kubernetes ensures services can always be found using DNS names and stable Service endpoints.
+
+    2.It abstracts away Pod IP changes and provides built-in load balancing.
+
+    3.It’s the foundation layer of service discovery in cloud-native systems, often extended by service meshes for advanced features.
+
+3. load balancing used by Kubernetes:
+    Use ClusterIP for internal services.(round-robin.)
+
+    Use LoadBalancer for public-facing services in cloud environments.(e.g., AWS ELB, GCP Load Balancer).
+
+    Use Ingress for HTTP routing and SSL termination. (like NGINX, Traefik, HAProxy)
+
+    Use Service Mesh for fine-grained control, observability, and resilience. (e.g., weighted routing, retries, circuit breaking).
